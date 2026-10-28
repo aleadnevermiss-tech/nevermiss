@@ -1,0 +1,329 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Cally Lead Response</title>
+<meta name="description" content="Cally texts every new real estate lead in under a minute, qualifies them, and sends you the hot ones. Free 14-day pilot.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@700;800&family=Public+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@500&display=swap">
+<style>
+/* Layout: yard-sign headline + live SMS thread up top, then a single column that walks an agent from "try it" to "start a pilot" */
+:root{
+  --paper:#F3F5F4; --card:#FFFFFF; --ink:#0F1D1A; --muted:#51605B; --line:#D6DDDA;
+  --accent:#0E7C66; --accent-ink:#FFFFFF; --amber:#E9A21B; --bubble:#E7ECEA; --danger:#B3261E;
+  --display:'Big Shoulders Display','Arial Narrow',Impact,sans-serif;
+  --body:'Public Sans',system-ui,-apple-system,sans-serif;
+  --mono:'JetBrains Mono',ui-monospace,Menlo,monospace;
+  color-scheme:light;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --paper:#0E1513; --card:#16201D; --ink:#E6EDEA; --muted:#9BABA5; --line:#29352F;
+  --accent:#3FBF9F; --accent-ink:#06120F; --amber:#F2B640; --bubble:#22302B; --danger:#F08A80; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --paper:#0E1513; --card:#16201D; --ink:#E6EDEA; --muted:#9BABA5; --line:#29352F;
+  --accent:#3FBF9F; --accent-ink:#06120F; --amber:#F2B640; --bubble:#22302B; --danger:#F08A80; color-scheme:dark}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+@media (prefers-reduced-motion: reduce){html{scroll-behavior:auto}*{animation:none!important;transition:none!important}}
+body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--body);font-size:17px;line-height:1.6;-webkit-font-smoothing:antialiased}
+.wrap{max-width:1080px;margin:0 auto;padding-left:max(20px,env(safe-area-inset-left,0px));padding-right:max(20px,env(safe-area-inset-right,0px))}
+a{color:var(--accent)}
+:focus-visible{outline:3px solid var(--amber);outline-offset:2px}
+.mono{font-family:var(--mono);font-size:.82em;letter-spacing:.02em}
+
+/* nav */
+nav{padding-block:18px;border-bottom:1px solid var(--line)}
+nav .wrap{display:flex;align-items:center;justify-content:space-between;gap:16px}
+.logo{font-family:var(--display);font-weight:800;font-size:1.7rem;letter-spacing:.04em;text-transform:uppercase;color:var(--ink);text-decoration:none;display:flex;align-items:center;gap:10px}
+.logo i{width:12px;height:12px;border-radius:50%;background:var(--accent);box-shadow:0 0 0 4px color-mix(in srgb,var(--accent) 22%,transparent)}
+.btn{display:inline-block;background:var(--accent);color:var(--accent-ink);font-weight:700;text-decoration:none;border:0;border-radius:8px;padding:12px 20px;font:inherit;font-weight:700;cursor:pointer}
+.btn:hover{filter:brightness(1.08)}
+.btn.ghost{background:transparent;color:var(--ink);border:2px solid var(--ink)}
+
+/* hero */
+.hero{padding-block:56px 64px}
+.hero .wrap{display:grid;grid-template-columns:1.15fr .85fr;gap:48px;align-items:center}
+.eyebrow{font-family:var(--mono);font-size:.8rem;text-transform:uppercase;letter-spacing:.12em;color:var(--muted);margin:0 0 14px}
+h1,h2{font-family:var(--display);font-weight:800;text-transform:uppercase;line-height:.95;letter-spacing:.01em;margin:0;text-wrap:balance}
+h1{font-size:clamp(3rem,7vw,5.4rem)}
+h1 em{font-style:normal;color:var(--accent)}
+.lede{font-size:1.2rem;color:var(--muted);max-width:34ch;margin:20px 0 28px}
+.cta-row{display:flex;flex-wrap:wrap;gap:12px;align-items:center}
+.cta-note{font-size:.9rem;color:var(--muted)}
+
+/* phone */
+.phone{background:var(--card);border:1px solid var(--line);border-radius:28px;padding:18px 16px 22px;max-width:360px;margin-left:auto;box-shadow:0 24px 60px -30px rgba(0,0,0,.35)}
+.phone-top{display:flex;justify-content:space-between;align-items:center;padding:0 6px 12px;border-bottom:1px solid var(--line);margin-bottom:14px}
+.phone-top b{font-size:.95rem}
+.thread{display:flex;flex-direction:column;gap:10px;min-height:300px}
+.sys{align-self:center;font-family:var(--mono);font-size:.72rem;color:var(--muted);text-align:center}
+.sys.alert{color:var(--ink);background:color-mix(in srgb,var(--amber) 28%,transparent);border-radius:6px;padding:4px 8px}
+.msg{max-width:82%;padding:9px 13px;border-radius:16px;font-size:.92rem;line-height:1.4}
+.msg.in{background:var(--bubble);align-self:flex-start;border-bottom-left-radius:4px}
+.msg.out{background:var(--accent);color:var(--accent-ink);align-self:flex-end;border-bottom-right-radius:4px}
+.stamp{align-self:flex-end;font-family:var(--mono);font-size:.72rem;color:var(--accent);font-weight:500}
+.pop{animation:pop .35s ease-out both}
+@keyframes pop{from{transform:translateY(6px);opacity:.25}to{transform:none;opacity:1}}
+
+/* sections */
+section{padding-block:72px}
+section.band{background:var(--card);border-block:1px solid var(--line)}
+h2{font-size:clamp(2.2rem,4.6vw,3.4rem);margin-bottom:14px}
+.sub{color:var(--muted);max-width:60ch;margin:0 0 36px}
+
+/* steps */
+.steps{display:grid;grid-template-columns:repeat(3,1fr);gap:28px;counter-reset:s}
+.step{border-top:3px solid var(--ink);padding-top:16px}
+.step .t{font-family:var(--mono);font-size:.78rem;color:var(--accent);display:block;margin-bottom:6px}
+.step h3{margin:0 0 6px;font-size:1.15rem}
+.step p{margin:0;color:var(--muted)}
+
+/* sources */
+.sources{display:flex;flex-wrap:wrap;gap:10px;margin-top:8px}
+.chip{border:1px solid var(--line);background:var(--paper);border-radius:999px;padding:8px 16px;font-weight:600;font-size:.95rem}
+
+/* demo + forms */
+.split{display:grid;grid-template-columns:1fr 1fr;gap:40px;align-items:start}
+.form{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:26px}
+section.band .form{background:var(--paper)}
+label{display:block;font-weight:600;font-size:.92rem;margin:14px 0 6px}
+input,select,textarea{width:100%;padding:12px;border:1px solid var(--line);border-radius:8px;background:var(--card);color:var(--ink);font:inherit;font-size:1rem}
+section.band input,section.band select,section.band textarea{background:var(--card)}
+.row2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.check{display:flex;gap:10px;align-items:flex-start;margin-top:16px;font-size:.85rem;color:var(--muted);font-weight:400}
+.check input{width:auto;margin-top:4px}
+.form .btn{width:100%;margin-top:18px;padding:14px}
+.err{color:var(--danger);font-size:.88rem;margin-top:10px;min-height:1.2em}
+.done{text-align:left}
+.done h3{margin:0 0 8px;font-size:1.3rem}
+
+/* pricing */
+.price{display:grid;grid-template-columns:1fr 1fr;gap:40px;align-items:center}
+.price-card{background:var(--ink);color:var(--paper);border-radius:16px;padding:32px}
+.price-card .amt{font-family:var(--display);font-weight:800;font-size:4.4rem;line-height:1}
+.price-card .amt small{font-family:var(--body);font-size:1rem;font-weight:500;opacity:.75}
+.price-card ul{list-style:none;padding:0;margin:20px 0 26px;display:grid;gap:10px}
+.price-card li{padding-left:26px;position:relative}
+.price-card li::before{content:"";position:absolute;left:0;top:.55em;width:12px;height:7px;border-left:2px solid var(--amber);border-bottom:2px solid var(--amber);transform:rotate(-45deg)}
+.price-card .btn{background:var(--amber);color:#1B1405;width:100%;text-align:center}
+
+/* faq */
+details{border-bottom:1px solid var(--line);padding-block:16px}
+summary{font-weight:700;cursor:pointer;list-style:none;display:flex;justify-content:space-between;gap:16px}
+summary::-webkit-details-marker{display:none}
+summary::after{content:"+";font-family:var(--mono);color:var(--accent)}
+details[open] summary::after{content:"–"}
+details p{color:var(--muted);margin:10px 0 0;max-width:68ch}
+
+footer{padding-block:36px;color:var(--muted);font-size:.9rem;border-top:1px solid var(--line)}
+footer .wrap{display:flex;flex-wrap:wrap;justify-content:space-between;gap:12px}
+
+@media (max-width:860px){
+  .hero .wrap,.split,.price{grid-template-columns:1fr}
+  .phone{margin:0 auto}
+  .steps{grid-template-columns:1fr}
+}
+@media (max-width:480px){.row2{grid-template-columns:1fr} section{padding-block:56px}}
+</style>
+</head>
+<body>
+
+<nav><div class="wrap">
+  <a class="logo" href="#top"><i aria-hidden="true"></i>Cally</a>
+  <a class="btn" href="#pilot">Start free pilot</a>
+</div></nav>
+
+<header class="hero" id="top"><div class="wrap">
+  <div>
+    <p class="eyebrow">Lead response for real estate agents</p>
+    <h1>Your leads hear back in <em>60 seconds.</em> Not 6 hours.</h1>
+    <p class="lede">Cally texts every new buyer and seller lead the moment it comes in, asks the qualifying questions, and texts you the hot ones. Day or night.</p>
+    <div class="cta-row">
+      <a class="btn" href="#demo">Text yourself a demo</a>
+      <a class="btn ghost" href="#pricing">See pricing</a>
+    </div>
+    <p class="cta-note" style="margin-top:14px">Free 14-day pilot. No calls, no contract.</p>
+  </div>
+
+  <div class="phone" aria-label="Example text conversation">
+    <div class="phone-top"><b>New lead · Zillow</b><span class="mono">Tue</span></div>
+    <div class="thread" id="heroThread">
+      <span class="sys alert">9:41 PM · Inquiry: 3bd in Antioch 94509</span>
+      <div class="msg out">Hi Jordan, this is Cally with Harbor Realty. Thanks for asking about 2118 Hillcrest! Are you looking to buy in the next 30 days?</div>
+      <span class="stamp">9:41 PM · replied in 0:38</span>
+      <div class="msg in">Yes, ASAP. Pre-approved too</div>
+      <div class="msg out">Great. An agent can call you tomorrow. Morning or afternoon?</div>
+      <div class="msg in">Morning</div>
+      <span class="sys">9:44 PM · Hot lead texted to agent</span>
+    </div>
+  </div>
+</div></header>
+
+<section class="band" id="how"><div class="wrap">
+  <h2>How it works</h2>
+  <p class="sub">Nothing to install and no new app to check. Cally plugs into the lead sources you already pay for.</p>
+  <div class="steps">
+    <div class="step"><span class="t">0:00</span><h3>A lead comes in</h3><p>From your website form or a Zillow, Realtor.com or Redfin lead alert.</p></div>
+    <div class="step"><span class="t">0:01 – 0:60</span><h3>Cally texts them</h3><p>A friendly text goes out in under a minute and asks about their timeline and the best time for a call.</p></div>
+    <div class="step"><span class="t">After they reply</span><h3>You get the hot ones</h3><p>Ready-now leads are texted straight to your phone. Leads who go quiet get two polite check-ins, and every lead is logged.</p></div>
+  </div>
+  <p class="sub" style="margin:36px 0 10px">Works with</p>
+  <div class="sources">
+    <span class="chip">Your website form</span><span class="chip">Zillow Premier Agent</span><span class="chip">Realtor.com</span><span class="chip">Redfin</span><span class="chip">Open house QR codes</span>
+  </div>
+</div></section>
+
+<section id="demo"><div class="wrap split">
+  <div>
+    <h2>Try it on your own phone</h2>
+    <p class="sub">Fill this out the way a lead would. You'll see exactly what your leads get from Cally.</p>
+    <div class="phone" style="margin:0">
+      <div class="phone-top"><b>Your demo</b><span class="mono" id="demoClock">now</span></div>
+      <div class="thread" id="demoThread">
+        <span class="sys">Submit the form to start</span>
+      </div>
+    </div>
+  </div>
+  <form class="form" id="demoForm" novalidate>
+    <label for="d-name">First name</label>
+    <input id="d-name" name="name" type="text" autocomplete="given-name" required>
+    <label for="d-phone">Mobile number</label>
+    <input id="d-phone" name="phone" type="tel" autocomplete="tel" placeholder="(925) 555-0123" required>
+    <div class="row2">
+      <div><label for="d-intent">Looking to</label>
+        <select id="d-intent" name="intent"><option>Buy</option><option>Sell</option></select></div>
+      <div><label for="d-time">Timeline</label>
+        <select id="d-time" name="timeline"><option>ASAP (0-30 days)</option><option>1-3 months</option><option>3-6+ months</option></select></div>
+    </div>
+    <label for="d-loc">ZIP code</label>
+    <input id="d-loc" name="location" type="text" inputmode="numeric" placeholder="94509">
+    <div class="check"><input id="d-consent" type="checkbox"><label for="d-consent" style="margin:0;font-weight:400">I agree to receive automated demo text messages from NeverMiss (Cally) at this number. Msg &amp; data rates may apply. Reply STOP to opt out.</label></div>
+    <button class="btn" type="submit">Send me the demo</button>
+    <p class="err" id="demoErr" role="alert"></p>
+  </form>
+</div></section>
+
+<section class="band" id="pricing"><div class="wrap price">
+  <div>
+    <h2>One plan. Cancel anytime.</h2>
+    <p class="sub">Try Cally free for 14 days on your real leads. If it doesn't earn its keep, stop and pay nothing.</p>
+    <p class="sub" style="margin:0">Setup is done for you over email. You send your lead sources, we connect them, and you get a short video showing your setup.</p>
+  </div>
+  <div class="price-card">
+    <div class="amt">$297<small> / month</small></div>
+    <ul>
+      <li>Instant text reply to every new lead, 24/7</li>
+      <li>Timeline and call-time questions by text</li>
+      <li>Hot leads texted to your phone</li>
+      <li>Two check-in texts for leads who go quiet</li>
+      <li>Every lead logged in a simple CRM sheet</li>
+      <li>Setup included, no contract</li>
+    </ul>
+    <a class="btn" href="#pilot">Start my free 14-day pilot</a>
+  </div>
+</div></section>
+
+<section id="pilot"><div class="wrap split">
+  <div>
+    <h2>Start your free pilot</h2>
+    <p class="sub">Tell us where your leads come from. You'll get an email within one business day with next steps. No phone call needed.</p>
+    <p class="sub" style="margin:0"><span class="mono">What happens next</span><br>1. We email you a short setup checklist.<br>2. We connect your lead sources.<br>3. Your 14 days start when the first lead gets a reply.</p>
+  </div>
+  <form class="form" id="pilotForm" novalidate>
+    <div class="row2">
+      <div><label for="p-name">Full name</label><input id="p-name" name="name" type="text" autocomplete="name" required></div>
+      <div><label for="p-brokerage">Brokerage or team</label><input id="p-brokerage" name="brokerage" type="text" autocomplete="organization"></div>
+    </div>
+    <label for="p-email">Email</label>
+    <input id="p-email" name="email" type="email" autocomplete="email" required>
+    <label for="p-phone">Phone for hot-lead alerts</label>
+    <input id="p-phone" name="alertPhone" type="tel" autocomplete="tel" required>
+    <label for="p-sources">Where do your leads come from?</label>
+    <select id="p-sources" name="sources">
+      <option>Zillow / Realtor.com</option><option>My website</option><option>Facebook / Instagram ads</option><option>A mix of these</option><option>Not sure yet</option>
+    </select>
+    <label for="p-volume">New leads per month (roughly)</label>
+    <select id="p-volume" name="volume"><option>Under 20</option><option>20–50</option><option>50–100</option><option>100+</option></select>
+    <button class="btn" type="submit">Request my pilot</button>
+    <p class="err" id="pilotErr" role="alert"></p>
+  </form>
+</div></section>
+
+<section class="band" id="faq"><div class="wrap">
+  <h2>Questions</h2>
+  <details><summary>Will leads know it's automated?</summary><p>Cally's texts are short and friendly, and they say up front that this is an automated assistant if anyone asks. If a lead asks for a person or replies with something Cally can't handle, it stops and texts you instead.</p></details>
+  <details><summary>How long does setup take?</summary><p>Most agents are live within 2–3 business days. You fill out one form and forward your lead alerts to an address we give you.</p></details>
+  <details><summary>Does it work with Zillow leads?</summary><p>Yes. Zillow and Realtor.com send you an email for each new lead. You forward those emails to Cally, and it replies to the lead within a minute.</p></details>
+  <details><summary>What about texting rules and opt-outs?</summary><p>Every text includes opt-out instructions, and anyone who replies STOP is never texted again. Your lead forms need texting-consent wording, and we'll send you the exact language to add.</p></details>
+  <details><summary>Does Cally give advice about homes or prices?</summary><p>No. Cally only confirms the inquiry, asks qualifying questions, and helps schedule a call with you. Pricing and property questions go to you.</p></details>
+  <details><summary>Can I cancel?</summary><p>Yes, anytime. There's no contract. Reply to any billing email and we'll stop your service at the end of the month.</p></details>
+</div></section>
+
+<footer><div class="wrap">
+  <span>Cally by NeverMiss · Antioch, California</span>
+  <span><a href="privacy.html">Privacy Policy</a> · <a href="terms.html">Terms &amp; Conditions</a></span>
+</div></footer>
+
+<script>
+/* demoLive sends a real text through the n8n "Cally — Landing Page Demo" workflow. */
+var CONFIG = {
+  demoLive: true,
+  demoWebhook: 'https://aleadnevermiss.app.n8n.cloud/webhook/cally-demo',
+  pilotWebhook: 'https://aleadnevermiss.app.n8n.cloud/webhook/cally-pilot'
+};
+
+function t(){ return new Date().toLocaleTimeString([], {hour:'numeric', minute:'2-digit'}); }
+function add(thread, cls, text, delay){
+  return new Promise(function(res){ setTimeout(function(){
+    var el = document.createElement(cls==='stamp'||cls.indexOf('sys')===0 ? 'span' : 'div');
+    el.className = (cls==='in'||cls==='out' ? 'msg ' : '') + cls + ' pop';
+    el.textContent = text; thread.appendChild(el); res();
+  }, delay); });
+}
+function digits(s){ return (s||'').replace(/\D/g,''); }
+
+document.getElementById('demoForm').addEventListener('submit', async function(e){
+  e.preventDefault();
+  var f = e.target, err = document.getElementById('demoErr');
+  var name = f.name.value.trim(), phone = digits(f.phone.value);
+  if(!name){ err.textContent = 'Enter your first name.'; return; }
+  if(phone.length < 10){ err.textContent = 'Enter a 10-digit mobile number.'; return; }
+  if(!document.getElementById('d-consent').checked){ err.textContent = 'Check the box to agree to the demo text.'; return; }
+  err.textContent = '';
+  var data = {name:name, phone:'+1'+phone.slice(-10), intent:f.intent.value, timeline:f.timeline.value, location:f.location.value.trim(), source:'landing-demo'};
+  var sent = false;
+  if(CONFIG.demoLive){
+    try{ var r = await fetch(CONFIG.demoWebhook,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(data)}); sent = r.ok; }catch(x){ sent = false; }
+  }
+  var th = document.getElementById('demoThread'); th.innerHTML = '';
+  document.getElementById('demoClock').textContent = t();
+  var loc = data.location ? ' in ' + data.location : '';
+  var hot = data.timeline.indexOf('ASAP') === 0;
+  await add(th,'sys alert', t() + ' · New lead: ' + name, 0);
+  await add(th,'out','Hi ' + name + ', this is Cally with Harbor Realty. Thanks for reaching out about ' + (data.intent==='Buy'?'buying':'selling') + loc + '! ' + (hot ? 'Would a quick call with an agent tomorrow help?' : 'Want me to send new matches as they come up?') + ' Reply STOP to opt out.', 700);
+  await add(th,'stamp', t() + ' · replied in 0:41', 250);
+  await add(th,'sys', hot ? 'Hot lead texted to the agent' : 'Added to follow-up texts', 900);
+  await add(th,'sys', sent ? 'This text was just sent to your phone.' : 'This is the text your leads receive.', 600);
+});
+
+document.getElementById('pilotForm').addEventListener('submit', async function(e){
+  e.preventDefault();
+  var f = e.target, err = document.getElementById('pilotErr');
+  var email = f.email.value.trim();
+  if(!f.name.value.trim()){ err.textContent = 'Enter your name.'; return; }
+  if(!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)){ err.textContent = 'Enter a valid email address.'; return; }
+  if(digits(f.alertPhone.value).length < 10){ err.textContent = 'Enter a 10-digit phone number for alerts.'; return; }
+  err.textContent = 'Sending…';
+  var data = {name:f.name.value.trim(), brokerage:f.brokerage.value.trim(), email:email, alertPhone:f.alertPhone.value.trim(), sources:f.sources.value, volume:f.volume.value, submitted:new Date().toISOString()};
+  try{
+    var r = await fetch(CONFIG.pilotWebhook,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(data)});
+    if(!r.ok) throw new Error();
+    f.outerHTML = '<div class="form done"><h3>You\'re on the list.</h3><p>We\'ll email ' + email.replace(/</g,'') + ' within one business day with your setup checklist.</p></div>';
+  }catch(x){
+    err.textContent = 'That didn\'t go through. Check your connection and try again.';
+  }
+});
+</script>
+</body>
+</html>
