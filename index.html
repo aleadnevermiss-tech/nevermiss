@@ -10,19 +10,19 @@
 <style>
 /* Layout: yard-sign headline + live SMS thread up top, then a single column that walks an agent from "try it" to "start a pilot" */
 :root{
-  --paper:#F3F5F4; --card:#FFFFFF; --ink:#0F1D1A; --muted:#51605B; --line:#D6DDDA;
-  --accent:#0E7C66; --accent-ink:#FFFFFF; --amber:#E9A21B; --bubble:#E7ECEA; --danger:#B3261E;
+  --paper:#F7F1EC; --card:#FFFBF8; --ink:#2B1A13; --muted:#6F574C; --line:#E4D4C9;
+  --accent:#9E2A2B; --accent-ink:#FFFFFF; --amber:#C8803F; --bubble:#F0E3D9; --danger:#B3261E;
   --display:'Big Shoulders Display','Arial Narrow',Impact,sans-serif;
   --body:'Public Sans',system-ui,-apple-system,sans-serif;
   --mono:'JetBrains Mono',ui-monospace,Menlo,monospace;
   color-scheme:light;
 }
 @media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
-  --paper:#0E1513; --card:#16201D; --ink:#E6EDEA; --muted:#9BABA5; --line:#29352F;
-  --accent:#3FBF9F; --accent-ink:#06120F; --amber:#F2B640; --bubble:#22302B; --danger:#F08A80; color-scheme:dark}}
+  --paper:#F7F1EC; --card:#FFFBF8; --ink:#2B1A13; --muted:#6F574C; --line:#E4D4C9;
+  --accent:#9E2A2B; --accent-ink:#FFFFFF; --amber:#C8803F; --bubble:#F0E3D9; --danger:#B3261E; color-scheme:light}}
 :root[data-theme="dark"]{
-  --paper:#0E1513; --card:#16201D; --ink:#E6EDEA; --muted:#9BABA5; --line:#29352F;
-  --accent:#3FBF9F; --accent-ink:#06120F; --amber:#F2B640; --bubble:#22302B; --danger:#F08A80; color-scheme:dark}
+  --paper:#F7F1EC; --card:#FFFBF8; --ink:#2B1A13; --muted:#6F574C; --line:#E4D4C9;
+  --accent:#9E2A2B; --accent-ink:#FFFFFF; --amber:#C8803F; --bubble:#F0E3D9; --danger:#B3261E; color-scheme:light}
 *{box-sizing:border-box}
 html{scroll-behavior:smooth}
 @media (prefers-reduced-motion: reduce){html{scroll-behavior:auto}*{animation:none!important;transition:none!important}}
@@ -106,7 +106,7 @@ section.band input,section.band select,section.band textarea{background:var(--ca
 .price-card ul{list-style:none;padding:0;margin:20px 0 26px;display:grid;gap:10px}
 .price-card li{padding-left:26px;position:relative}
 .price-card li::before{content:"";position:absolute;left:0;top:.55em;width:12px;height:7px;border-left:2px solid var(--amber);border-bottom:2px solid var(--amber);transform:rotate(-45deg)}
-.price-card .btn{background:var(--amber);color:#1B1405;width:100%;text-align:center}
+.price-card .btn{background:var(--amber);color:#2B1A13;width:100%;text-align:center}
 
 /* faq */
 details{border-bottom:1px solid var(--line);padding-block:16px}
