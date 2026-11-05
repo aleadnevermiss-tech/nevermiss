@@ -322,11 +322,12 @@ document.getElementById('pilotForm').addEventListener('submit', async function(e
     var r = await fetch(CONFIG.pilotWebhook,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(data)});
     var res = {}; try{ res = await r.json(); }catch(y){}
     if(!r.ok || !res.ok){ err.textContent = res.error || 'That didn\'t go through. Check your connection and try again.'; return; }
-    var esc = function(s){ return String(s||'').replace(/[<>&"]/g,''); };
+    var esc = function(s){ return String(s||'').replace(/[&<>"]/g, function(c){ return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]; }); };
     f.outerHTML = '<div class="form done"><h3>You\'re live.</h3><p>Your free trial runs through ' + esc(res.trialEnds) + '. Forward your new-lead emails to your Cally address:</p>'
       + '<p class="mono" style="font-size:1rem;word-break:break-all;background:var(--bubble);padding:12px;border-radius:8px;user-select:all">' + esc(res.forwardTo) + '</p>'
-      + '<p>Set up a forwarding rule in Gmail or Outlook for emails from Zillow, Realtor.com or your website form. Cally texts each new lead within about a minute and texts you when one is hot.</p>'
-      + '<p>We just texted you this address and emailed ' + esc(email) + ' step-by-step forwarding instructions.</p></div>';
+      + '<p>' + esc(res.tip || 'Set up a forwarding rule in Gmail or Outlook for emails from Zillow, Realtor.com or your website form.') + '</p>'
+      + '<p>Cally texts each new lead within about a minute and texts you when one is hot.</p>'
+      + '<p>We just texted you this address and emailed ' + esc(email) + ' step-by-step instructions for Realtor.com, Zillow and website forms.</p></div>';
   }catch(x){
     err.textContent = 'That didn\'t go through. Check your connection and try again.';
   }
